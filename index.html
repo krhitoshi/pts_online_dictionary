@@ -148,8 +148,8 @@
 
     // show the table
     const showDefinitionTable = () => {
-      document.getElementById('definitions').style.display = '';
-      document.getElementById('num-definitions').style.display = '';
+      show('definitions');
+      show('num-definitions');
     };
 
     // hide the table
@@ -161,6 +161,11 @@
     // update num-definitions
     const updateNumDefinitions = (numDefinitions) => {
       document.getElementById('num-definitions').innerHTML = `${numDefinitions} definitions`;
+    };
+
+    // show an element
+    const show = (id) => {
+      document.getElementById(id).style.display = '';
     };
 
     //hide an element
