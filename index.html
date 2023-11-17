@@ -55,6 +55,7 @@
         const data = JSON.parse(response);
         console.log(data.length);
         displayNumDefinitions(data);
+        showDefinitionTable();
         displayDefinitions(data);
         clearStatus();
         status('successfully dictionary data loaded.');
@@ -120,6 +121,11 @@
     const clearStatus = () => {
       document.getElementById('status').innerHTML = '';
     };
+
+    // show the table
+    const showDefinitionTable = () => {
+      document.getElementById('definitions').style.display = '';
+    };
   </script>
 </head>
 <body>
@@ -130,7 +136,7 @@
   <input type="text" name="headword" placeholder="Headword">
 </form>
 <p id="num-definitions"></p>
-<table id="definitions">
+<table id="definitions" style="display: none">
   <tr>
     <th>Headword</th>
     <th>Definition</th>
