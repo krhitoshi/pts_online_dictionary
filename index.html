@@ -114,6 +114,13 @@
         }
         updateNumDefinitions(numDefinitions);
       }
+
+      // hide the table if there is no definition
+      if (numDefinitions === 0) {
+        hideDefinitionTable();
+      } else {
+        showDefinitionTable();
+      }
     }
 
     // append a message to the status element
@@ -129,6 +136,11 @@
     // show the table
     const showDefinitionTable = () => {
       document.getElementById('definitions').style.display = '';
+    };
+
+    // hide the table
+    const hideDefinitionTable = () => {
+      document.getElementById('definitions').style.display = 'none';
     };
 
     // update num-definitions
