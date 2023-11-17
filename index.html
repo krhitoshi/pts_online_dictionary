@@ -20,6 +20,10 @@
           height: 1px;
           background: #ccc;
       }
+
+      #status {
+          color: darkgreen;
+      }
   </style>
   <script>
     // load ptsd.json
@@ -45,12 +49,16 @@
 
     // execute loadJSON when page loads
     window.onload = () => {
+      status('loading dictionary data... (It will take a few seconds.)');
       loadJSON((response) => {
         // Parse JSON string into object
         const data = JSON.parse(response);
         console.log(data.length);
         displayNumDefinitions(data);
         displayDefinitions(data);
+        clearStatus();
+        status('successfully dictionary data loaded.');
+        status('ready for looking up words.')
       });
 
       // search headword when user keys on search box
@@ -102,10 +110,21 @@
         }
       }
     }
+
+    // append a message to the status element
+    const status = (message) => {
+      document.getElementById('status').innerHTML += `${message}<br>`;
+    };
+
+    // clear the status element
+    const clearStatus = () => {
+      document.getElementById('status').innerHTML = '';
+    };
   </script>
 </head>
 <body>
 <h1>The Pāḷi Text Society's Pāli-English Dictionary</h1>
+<p id="status"></p>
 // Search box for headwords
 <form id="search">
   <input type="text" name="headword" placeholder="Headword">
