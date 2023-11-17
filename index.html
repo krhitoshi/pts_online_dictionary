@@ -154,13 +154,18 @@
 
     // hide the table
     const hideDefinitionTable = () => {
-      document.getElementById('definitions').style.display = 'none';
-      document.getElementById('num-definitions').style.display = 'none';
+      hide('definitions');
+      hide('num-definitions');
     };
 
     // update num-definitions
     const updateNumDefinitions = (numDefinitions) => {
       document.getElementById('num-definitions').innerHTML = `${numDefinitions} definitions`;
+    };
+
+    //hide an element
+    const hide = (id) => {
+      document.getElementById(id).style.display = 'none';
     };
   </script>
 </head>
