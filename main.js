@@ -1,3 +1,5 @@
+let data = null;
+
 // load ptsd.json
 const loadJSON = (callback) => {
   const file = 'ptsd.json';
@@ -24,10 +26,8 @@ window.onload = () => {
   status('loading dictionary data... (It will take a few seconds.)');
   loadJSON((response) => {
     // Parse JSON string into object
-    const data = JSON.parse(response);
+    data = JSON.parse(response);
     console.log(data.length);
-    displayNumDefinitions(data);
-    displayDefinitions(data);
     clearStatus();
     status('successfully dictionary data loaded.');
     status('ready for looking up words.')
@@ -79,33 +79,26 @@ function searchHeadword() {
     return;
   }
 
-  // get the table
-  const table = document.getElementById('definitions');
-  // get the number of rows in the table
-  const numRows = table.rows.length;
-
-  let numDefinitions = 0;
   // loop through the rows
-  for (let i = 1; i < numRows; i++) {
+  let newData = [];
+  for (let i = 0; i < data.length; i++) {
     // get the headword in the row
-    const headword = table.rows[i].cells[0].innerHTML;
+    const definition = data[i];
+    const headword = definition.headword;
     // if the headword starts with the search keyword, display the row
     // Normalize both strings to the same form (NFD is "Normalization Form Canonical Decomposition")
     const normalizedHeadword = normalizeString(headword);
     const normalizedSearchHeadword = normalizeString(searchHeadword);
 
     if (normalizedHeadword.startsWith(normalizedSearchHeadword)) {
-      table.rows[i].style.display = '';
-      numDefinitions++;
-    } else {
-      // otherwise, hide the row
-      table.rows[i].style.display = 'none';
+      newData.push(definition);
     }
-    updateNumDefinitions(numDefinitions);
   }
+  updateNumDefinitions(newData.length);
+  displayDefinitions(newData);
 
   // hide the table if there is no definition
-  if (numDefinitions === 0) {
+  if (newData.length === 0) {
     hideDefinitionTable();
   } else {
     showDefinitionTable();
@@ -133,6 +126,15 @@ const hideDefinitionTable = () => {
   hide('definitions');
   hide('num-definitions');
 };
+
+// delete definitions
+function deleteDefinitions() {
+  const table = document.getElementById('definitions');
+  const numRows = table.rows.length;
+  for (let i = 1; i < numRows; i++) {
+    table.deleteRow(1);
+  }
+}
 
 // update num-definitions
 const updateNumDefinitions = (numDefinitions) => {
