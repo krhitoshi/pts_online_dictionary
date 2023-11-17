@@ -79,21 +79,14 @@ function searchHeadword() {
     return;
   }
 
-  // loop through the rows
-  let newData = [];
-  for (let i = 0; i < data.length; i++) {
-    // get the headword in the row
-    const definition = data[i];
+  // filter the data based on the search keyword
+  const newData = data.filter((definition) => {
     const headword = definition.headword;
-    // if the headword starts with the search keyword, display the row
-    // Normalize both strings to the same form (NFD is "Normalization Form Canonical Decomposition")
     const normalizedHeadword = normalizeString(headword);
     const normalizedSearchHeadword = normalizeString(searchHeadword);
+    return normalizedHeadword.startsWith(normalizedSearchHeadword);
+  });
 
-    if (normalizedHeadword.startsWith(normalizedSearchHeadword)) {
-      newData.push(definition);
-    }
-  }
   updateNumDefinitions(newData.length);
   displayDefinitions(newData);
 
