@@ -65,6 +65,13 @@
       document.getElementById('search').elements[0].addEventListener('keyup', () => {
         searchHeadword();
       });
+
+      // prevent the form from submitting when user presses enter
+      document.getElementById('search').addEventListener('keypress', function(event) {
+        if (event.keyCode == 13) {
+          event.preventDefault();
+        }
+      });
     };
 
     // display the number of definitions
