@@ -71,7 +71,7 @@
     // display the number of definitions
     const displayNumDefinitions = (data) => {
       const numDefinitions = document.getElementById('num-definitions');
-      numDefinitions.innerHTML = `Definitions: ${data.length}`;
+      numDefinitions.innerHTML = `${data.length} definitions`;
     };
 
     // display the definitions
@@ -131,10 +131,11 @@
 <body>
 <h1>The Pāḷi Text Society's Pāli-English Dictionary</h1>
 <p id="status"></p>
-// Search box for headwords
+
 <form id="search">
-  <input type="text" name="headword" placeholder="Headword">
+  Loop up: <input type="text" name="headword" placeholder="Headword">
 </form>
+
 <p id="num-definitions"></p>
 <table id="definitions" style="display: none">
   <tr>
