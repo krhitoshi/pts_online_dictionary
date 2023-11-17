@@ -98,6 +98,8 @@
       const table = document.getElementById('definitions');
       // get the number of rows in the table
       const numRows = table.rows.length;
+
+      let numDefinitions = 0;
       // loop through the rows
       for (let i = 1; i < numRows; i++) {
         // get the headword in the row
@@ -105,10 +107,12 @@
         // if the headword starts with the search keyword, display the row
         if (headword.startsWith(searchHeadword)) {
           table.rows[i].style.display = '';
+          numDefinitions++;
         } else {
           // otherwise, hide the row
           table.rows[i].style.display = 'none';
         }
+        updateNumDefinitions(numDefinitions);
       }
     }
 
@@ -125,6 +129,11 @@
     // show the table
     const showDefinitionTable = () => {
       document.getElementById('definitions').style.display = '';
+    };
+
+    // update num-definitions
+    const updateNumDefinitions = (numDefinitions) => {
+      document.getElementById('num-definitions').innerHTML = `${numDefinitions} definitions`;
     };
   </script>
 </head>
