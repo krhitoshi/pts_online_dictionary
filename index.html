@@ -23,55 +23,55 @@
   </style>
   <script>
     // load ptsd.json
-    function loadJSON(callback) {
-      var ptsd = null;
-      var xhr = new XMLHttpRequest();
+    const loadJSON = (callback) => {
+      let ptsd = null;
+      const xhr = new XMLHttpRequest();
       xhr.open('GET', 'ptsd.json', true);
       // call callback to treat with the JSON data
-      xhr.onload = function() {
+      xhr.onload = () => {
         if (xhr.status === 200) {
           ptsd = xhr.responseText;
           callback(ptsd);
-        }
-        else {
-          console.log('Request failed.  Returned status of ' + xhr.status);
+        } else {
+          console.log(`Request failed. Returned status of ${xhr.status}`);
         }
       };
 
-
       xhr.send(null);
-    }
+    };
+
     // execute loadJSON when page loads
-    window.onload = function() {
-      loadJSON(function(response) {
+    window.onload = () => {
+      loadJSON((response) => {
         // Parse JSON string into object
-        var data = JSON.parse(response);
+        const data = JSON.parse(response);
         console.log(data.length);
-        displayNumDefinitions(data)
-        displayDefinitions(data)
+        displayNumDefinitions(data);
+        displayDefinitions(data);
       });
     };
-    // display the number of definitions
-    function displayNumDefinitions(data) {
-      var numDefinitions = document.getElementById('num-definitions');
-      numDefinitions.innerHTML = 'Definitions: ' + data.length;
-    }
-    // display the definitions
-    function displayDefinitions(data) {
-      var table = document.getElementById('definitions');
-      for (var i = 0; i < data.length; i++) {
-        var row = table.insertRow(i + 1);
-        var headword = row.insertCell(0);
-        headword.innerHTML = data[i].headword;
-        var definition = row.insertCell(1);
-        definition.innerHTML = data[i].definition;
-        // add memo into definition if memo is not empty
-        if (data[i].memo !== '') {
-          definition.innerHTML += '<hr>' + data[i].memo;
-        }
 
-      }
-    }
+    // display the number of definitions
+    const displayNumDefinitions = (data) => {
+      const numDefinitions = document.getElementById('num-definitions');
+      numDefinitions.innerHTML = `Definitions: ${data.length}`;
+    };
+
+    // display the definitions
+    const displayDefinitions = (data) => {
+      const table = document.getElementById('definitions');
+      data.forEach((item, index) => {
+        const row = table.insertRow(index + 1);
+        const headword = row.insertCell(0);
+        headword.innerHTML = item.headword;
+        const definition = row.insertCell(1);
+        definition.innerHTML = item.definition;
+        // add memo into definition if memo is not empty
+        if (item.memo !== '') {
+          definition.innerHTML += `<hr>${item.memo}`;
+        }
+      });
+    };
   </script>
 </head>
 <body>
