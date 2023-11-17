@@ -70,6 +70,7 @@ const displayDefinitions = (data) => {
 
 // display only the definitions that match the search keyword
 function searchHeadword() {
+  deleteDefinitions();
   // get the search headword
   const searchHeadword = document.getElementById('search').elements[0].value;
 
@@ -87,13 +88,14 @@ function searchHeadword() {
     return normalizedHeadword.startsWith(normalizedSearchHeadword);
   });
 
-  updateNumDefinitions(newData.length);
-  displayDefinitions(newData);
+
 
   // hide the table if there is no definition
   if (newData.length === 0) {
     hideDefinitionTable();
   } else {
+    updateNumDefinitions(newData.length);
+    displayDefinitions(newData);
     showDefinitionTable();
   }
 }
