@@ -90,7 +90,11 @@ function searchHeadword() {
     // get the headword in the row
     const headword = table.rows[i].cells[0].innerHTML;
     // if the headword starts with the search keyword, display the row
-    if (headword.startsWith(searchHeadword)) {
+    // Normalize both strings to the same form (NFD is "Normalization Form Canonical Decomposition")
+    const normalizedHeadword = normalizeString(headword);
+    const normalizedSearchHeadword = normalizeString(searchHeadword);
+
+    if (normalizedHeadword.startsWith(normalizedSearchHeadword)) {
       table.rows[i].style.display = '';
       numDefinitions++;
     } else {
@@ -144,3 +148,8 @@ const show = (id) => {
 const hide = (id) => {
   document.getElementById(id).style.display = 'none';
 };
+
+// normalize string
+const normalizeString = (str) => {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
