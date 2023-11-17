@@ -55,7 +55,6 @@
         const data = JSON.parse(response);
         console.log(data.length);
         displayNumDefinitions(data);
-        showDefinitionTable();
         displayDefinitions(data);
         clearStatus();
         status('successfully dictionary data loaded.');
@@ -94,6 +93,13 @@
     function searchHeadword() {
       // get the search headword
       const searchHeadword = document.getElementById('search').elements[0].value;
+
+      // do nothing if the search keyword is empty
+      if (searchHeadword === '') {
+        hideDefinitionTable();
+        return;
+      }
+
       // get the table
       const table = document.getElementById('definitions');
       // get the number of rows in the table
@@ -136,11 +142,13 @@
     // show the table
     const showDefinitionTable = () => {
       document.getElementById('definitions').style.display = '';
+      document.getElementById('num-definitions').style.display = '';
     };
 
     // hide the table
     const hideDefinitionTable = () => {
       document.getElementById('definitions').style.display = 'none';
+      document.getElementById('num-definitions').style.display = 'none';
     };
 
     // update num-definitions
@@ -153,11 +161,12 @@
 <h1>The Pāḷi Text Society's Pāli-English Dictionary</h1>
 <p id="status"></p>
 
+
 <form id="search">
   Loop up: <input type="text" name="headword" placeholder="Headword">
 </form>
 
-<p id="num-definitions"></p>
+<p id="num-definitions" style="display: none"></p>
 <table id="definitions" style="display: none">
   <tr>
     <th>Headword</th>
