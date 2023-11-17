@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Pāḷi Text Society's Pāli-English Dictionary</title>
+  <style>
+      body {
+          font-size: 1.2em;
+      }
+      table {
+          border-collapse: collapse;
+      }
+      table, th, td {
+          border: 1px solid black;
+      }
+
+      /* light gray line */
+      hr {
+          border: 0;
+          height: 1px;
+          background: #ccc;
+      }
+  </style>
+  <script>
+    // load ptsd.json
+    function loadJSON(callback) {
+      var ptsd = null;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'ptsd.json', true);
+      // call callback to treat with the JSON data
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          ptsd = xhr.responseText;
+          callback(ptsd);
+        }
+        else {
+          console.log('Request failed.  Returned status of ' + xhr.status);
+        }
+      };
+
+
+      xhr.send(null);
+    }
+    // execute loadJSON when page loads
+    window.onload = function() {
+      loadJSON(function(response) {
+        // Parse JSON string into object
+        var data = JSON.parse(response);
+        console.log(data.length);
+        displayNumDefinitions(data)
+        displayDefinitions(data)
+      });
+    };
+    // display the number of definitions
+    function displayNumDefinitions(data) {
+      var numDefinitions = document.getElementById('num-definitions');
+      numDefinitions.innerHTML = 'Definitions: ' + data.length;
+    }
+    // display the definitions
+    function displayDefinitions(data) {
+      var table = document.getElementById('definitions');
+      for (var i = 0; i < data.length; i++) {
+        var row = table.insertRow(i + 1);
+        var headword = row.insertCell(0);
+        headword.innerHTML = data[i].headword;
+        var definition = row.insertCell(1);
+        definition.innerHTML = data[i].definition;
+        // add memo into definition if memo is not empty
+        if (data[i].memo !== '') {
+          definition.innerHTML += '<hr>' + data[i].memo;
+        }
+
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>The Pāḷi Text Society's Pāli-English Dictionary</h1>
+<p id="num-definitions"></p>
+<table id="definitions">
+  <tr>
+    <th>Headword</th>
+    <th>Definition</th>
+  </tr>
+</table>
+</body>
+</html>
