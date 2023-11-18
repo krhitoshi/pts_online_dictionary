@@ -5,7 +5,7 @@ const loadJSON = (callback) => {
   const file = 'ptsd.json';
   let ptsd = null;
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', 'ptsd.json', true);
+  xhr.open('GET', file, true);
 
   // execute callback to treat with the JSON data
   xhr.onload = () => {
