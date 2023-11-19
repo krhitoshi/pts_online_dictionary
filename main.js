@@ -38,6 +38,16 @@ window.onload = () => {
     searchHeadword();
   });
 
+  // search headword when user changes accent/match mode
+  const radioButtonModes = ['accent-mode', 'match-mode'];
+  radioButtonModes.forEach((mode) => {
+    document.querySelectorAll(`input[name="${mode}"]`).forEach((item) => {
+      item.addEventListener('change', () => {
+        searchHeadword();
+      });
+    });
+  });
+
   // prevent the form from submitting when user presses enter
   document.getElementById('search').addEventListener('keypress', function(event) {
     if (event.keyCode == 13) {
