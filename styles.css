@@ -1,5 +1,7 @@
 body {
     font-size: 1.3em;
+    width: 80%;
+    margin: 0 auto;
 }
 
 table {
@@ -8,6 +10,12 @@ table {
 
 table, th, td {
     border: 1px solid black;
+}
+
+table td.headword {
+    font-weight: bold;
+    vertical-align: top;
+    text-align: center;
 }
 
 /* light gray line */

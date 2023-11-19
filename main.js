@@ -68,6 +68,7 @@ const displayDefinitions = (data) => {
   data.forEach((item, index) => {
     const row = table.insertRow(index + 1);
     const headword = row.insertCell(0);
+    headword.className = "headword";
     headword.innerHTML = item.headword;
     const definition = row.insertCell(1);
     definition.innerHTML = item.definition;
