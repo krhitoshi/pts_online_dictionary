@@ -83,9 +83,17 @@ function searchHeadword() {
   // filter the data based on the search keyword
   const newData = data.filter((definition) => {
     const headword = definition.headword;
-    const normalizedHeadword = normalizeString(headword);
-    const normalizedSearchHeadword = normalizeString(searchHeadword);
-    return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
+
+    if ( getAccentMode() === 'insensitive' ) {
+      // accent insensitive
+      const normalizedHeadword = normalizeString(headword);
+      const normalizedSearchHeadword = normalizeString(searchHeadword);
+      return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
+    }
+    else {
+      // accent sensitive
+      return matchHeadword(headword, searchHeadword);
+    }
   });
 
   // hide the table if there is no definition
