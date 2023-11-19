@@ -136,6 +136,11 @@ const updateNumDefinitions = (numDefinitions) => {
   document.getElementById('num-definitions').innerHTML = `${numDefinitions} definitions`;
 };
 
+// get match mode radio button value
+const getMatchMode = () => {
+  return document.querySelector('input[name="match-mode"]:checked').value;
+};
+
 // show an element
 const show = (id) => {
   document.getElementById(id).style.display = '';
