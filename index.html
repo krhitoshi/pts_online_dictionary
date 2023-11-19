@@ -12,6 +12,12 @@
 <form id="search">
   Loop up: <input type="text" name="headword" placeholder="Headword">
   <br>
+  Accent:
+  <input type="radio" id="accentInsensitive" name="accent-mode" value="insensitive" checked>
+  <label for="accentInsensitive">Insensitive</label>
+  <input type="radio" id="accentSensitive" name="accent-mode" value="sensitive">
+  <label for="accentSensitive">Sensitive</label>
+  <br>
   <input type="radio" id="forwardMatch" name="match-mode" value="forward" checked>
   <label for="forwardMatch">Forward Match</label>
   <input type="radio" id="exactMatch" name="match-mode" value="exact">
