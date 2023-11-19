@@ -85,7 +85,15 @@ function searchHeadword() {
     const headword = definition.headword;
     const normalizedHeadword = normalizeString(headword);
     const normalizedSearchHeadword = normalizeString(searchHeadword);
-    return normalizedHeadword.startsWith(normalizedSearchHeadword);
+
+    const matchMode = getMatchMode();
+    if ( matchMode === 'forward' ) {
+      return normalizedHeadword.startsWith(normalizedSearchHeadword);
+    } else if ( matchMode === 'exact' ) {
+      return normalizedHeadword === normalizedSearchHeadword;
+    } else {
+      return normalizedHeadword.endsWith(normalizedSearchHeadword);
+    }
   });
 
 
