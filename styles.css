@@ -1,5 +1,5 @@
 body {
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 
 table {
@@ -19,4 +19,9 @@ hr {
 
 #status {
     color: darkgreen;
+}
+
+input[type=text] {
+    font-size: 20px;
+    padding: 5px;
 }
