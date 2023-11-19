@@ -18,6 +18,10 @@ table td.headword {
     text-align: center;
 }
 
+table td p {
+    margin: 2px;
+}
+
 /* light gray line */
 hr {
     border: 0;
@@ -32,4 +36,8 @@ hr {
 input[type=text] {
     font-size: 20px;
     padding: 5px;
+}
+
+h1 span.small {
+    font-size: 0.5em;
 }
