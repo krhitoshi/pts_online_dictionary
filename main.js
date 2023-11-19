@@ -85,10 +85,16 @@ function searchHeadword() {
     const headword = definition.headword;
     const normalizedHeadword = normalizeString(headword);
     const normalizedSearchHeadword = normalizeString(searchHeadword);
-    return normalizedHeadword.startsWith(normalizedSearchHeadword);
+
+    const matchMode = getMatchMode();
+    if ( matchMode === 'forward' ) {
+      return normalizedHeadword.startsWith(normalizedSearchHeadword);
+    } else if ( matchMode === 'exact' ) {
+      return normalizedHeadword === normalizedSearchHeadword;
+    } else {
+      return normalizedHeadword.endsWith(normalizedSearchHeadword);
+    }
   });
-
-
 
   // hide the table if there is no definition
   if (newData.length === 0) {
@@ -134,6 +140,11 @@ function deleteDefinitions() {
 // update num-definitions
 const updateNumDefinitions = (numDefinitions) => {
   document.getElementById('num-definitions').innerHTML = `${numDefinitions} definitions`;
+};
+
+// get match mode radio button value
+const getMatchMode = () => {
+  return document.querySelector('input[name="match-mode"]:checked').value;
 };
 
 // show an element
