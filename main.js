@@ -96,8 +96,6 @@ function searchHeadword() {
     }
   });
 
-
-
   // hide the table if there is no definition
   if (newData.length === 0) {
     hideDefinitionTable();
