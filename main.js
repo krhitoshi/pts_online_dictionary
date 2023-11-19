@@ -85,15 +85,7 @@ function searchHeadword() {
     const headword = definition.headword;
     const normalizedHeadword = normalizeString(headword);
     const normalizedSearchHeadword = normalizeString(searchHeadword);
-
-    const matchMode = getMatchMode();
-    if ( matchMode === 'forward' ) {
-      return normalizedHeadword.startsWith(normalizedSearchHeadword);
-    } else if ( matchMode === 'exact' ) {
-      return normalizedHeadword === normalizedSearchHeadword;
-    } else {
-      return normalizedHeadword.endsWith(normalizedSearchHeadword);
-    }
+    return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
   });
 
   // hide the table if there is no definition
@@ -105,6 +97,18 @@ function searchHeadword() {
     showDefinitionTable();
   }
 }
+
+// match the search keyword with the headword
+const matchHeadword = (headword, searchHeadword) => {
+    const matchMode = getMatchMode();
+    if ( matchMode === 'forward' ) {
+      return headword.startsWith(searchHeadword);
+    } else if ( matchMode === 'exact' ) {
+      return headword === searchHeadword;
+    } else {
+      return headword.endsWith(searchHeadword);
+    }
+};
 
 // append a message to the status element
 const status = (message) => {
