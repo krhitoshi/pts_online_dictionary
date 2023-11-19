@@ -142,6 +142,11 @@ const updateNumDefinitions = (numDefinitions) => {
   document.getElementById('num-definitions').innerHTML = `${numDefinitions} definitions`;
 };
 
+// get accent mode radio button value
+const getAccentMode = () => {
+  return document.querySelector('input[name="accent-mode"]:checked').value;
+};
+
 // get match mode radio button value
 const getMatchMode = () => {
   return document.querySelector('input[name="match-mode"]:checked').value;
