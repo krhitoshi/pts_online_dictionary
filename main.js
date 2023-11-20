@@ -175,6 +175,7 @@ const getAccentMode = () => {
 const getMatchMode = () => {
   return document.querySelector('input[name="match-mode"]:checked').value;
 };
+
 // get include definition checkbox value
 const getIncludeDefinitionMode = () => {
   return document.getElementById('include-definition').checked;
