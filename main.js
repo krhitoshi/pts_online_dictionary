@@ -31,7 +31,7 @@ const displayNumDefinitions = (data) => {
 const displayDefinitions = (data) => {
   const table = document.getElementById('definitions');
   let searchKeyword = getSearchKeyword();
-  const regex = searchRegex(searchKeyword, getAccentMode());
+  const regex = highlightRegex(searchKeyword, getAccentMode());
 
   data.forEach((item, index) => {
     const row = table.insertRow(index + 1);
@@ -49,7 +49,7 @@ const displayDefinitions = (data) => {
   });
 };
 
-const searchRegex = (searchKeyword, accentMode) => {
+const highlightRegex = (searchKeyword, accentMode) => {
   let regexBase = searchKeyword
 
   if ( accentMode === 'insensitive' ) {
