@@ -30,8 +30,17 @@ const displayNumDefinitions = (data) => {
 // display the definitions
 const displayDefinitions = (data) => {
   const table = document.getElementById('definitions');
-  const searchKeyword = getSearchKeyword();
-  const regex = new RegExp(searchKeyword, 'gi');
+  let searchKeyword = getSearchKeyword();
+  let regexBase = searchKeyword.replace(/[aā]/g, '[aā]');
+  regexBase = regexBase.replace(/[iī]/g, '[iī]');
+  regexBase = regexBase.replace(/[uū]/g, '[uū]');
+  regexBase = regexBase.replace(/[ṅñṇnn]/g, '[ṅñṇnn]');
+  regexBase = regexBase.replace(/[ṃmṁ]/g, '[ṃmṁ]');
+  regexBase = regexBase.replace(/[ṭt]/g, '[ṭt]');
+  regexBase = regexBase.replace(/[ḍd]/g, '[ḍd]');
+  regexBase = regexBase.replace(/[ḷl]/g, '[ḷl]');
+  regexBase = regexBase.replace(/[ḥh]/g, '[ḥh]');
+  const regex = new RegExp(regexBase, 'gi');
 
   data.forEach((item, index) => {
     const row = table.insertRow(index + 1);
@@ -39,12 +48,12 @@ const displayDefinitions = (data) => {
     headword.className = "headword";
 
     // highlight the search keyword
-    headword.innerHTML = highlight(item.headword, searchKeyword);
+    headword.innerHTML = highlight(searchKeyword, regex, item.headword);
     const definition = row.insertCell(1);
-    definition.innerHTML = highlight(item.definition, searchKeyword);
+    definition.innerHTML = highlight(searchKeyword, regex, item.definition);
     // add memo into definition if memo is not empty
     if (item.memo !== '') {
-      definition.innerHTML += `<hr>${highlight(item.memo, searchKeyword)}`;
+      definition.innerHTML += `<hr>${highlight(searchKeyword, regex, item.memo)}`;
     }
   });
 };
@@ -135,12 +144,12 @@ const matchDefinition = (definition, searchDefinition) => {
 }
 
 // highlight the search keyword
-const highlight = (text, searchKeyword) => {
+const highlight = (searchKeyword, regex, text) => {
   // do nothing if the search keyword is one character or less
   if ( searchKeyword.length <= 1 ) {
-    return text
+    return text;
   } else {
-    return text.replace(searchKeyword, (match) => `<span class="highlight">${match}</span>`);
+    return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
   }
 };
 
