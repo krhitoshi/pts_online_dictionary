@@ -44,6 +44,18 @@ const displayDefinitions = (data) => {
   });
 };
 
+function headwordFilter(accentMode, headword, keyword) {
+  if (accentMode === 'insensitive') {
+    // accent insensitive
+    const normalizedHeadword = normalizeString(headword);
+    const normalizedSearchHeadword = normalizeString(keyword);
+    return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
+  } else {
+    // accent sensitive
+    return matchHeadword(headword, keyword);
+  }
+}
+
 // display only the definitions that match the search keyword
 function searchHeadword() {
   deleteDefinitions();
@@ -59,17 +71,8 @@ function searchHeadword() {
   // filter the data based on the search keyword
   const newData = data.filter((definition) => {
     const headword = definition.headword;
-
-    if ( getAccentMode() === 'insensitive' ) {
-      // accent insensitive
-      const normalizedHeadword = normalizeString(headword);
-      const normalizedSearchHeadword = normalizeString(searchKeyword);
-      return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
-    }
-    else {
-      // accent sensitive
-      return matchHeadword(headword, searchKeyword);
-    }
+    const accentMode = getAccentMode();
+    return headwordFilter(accentMode, headword, searchKeyword);
   });
 
   // hide the table if no definition matches the search keyword
