@@ -50,8 +50,10 @@ const displayDefinitions = (data) => {
 };
 
 const searchRegex = (searchKeyword, accentMode) => {
+  let regexBase = searchKeyword
+
   if ( accentMode === 'insensitive' ) {
-    let regexBase = searchKeyword.replace(/[aā]/g, '[aā]')
+    regexBase = searchKeyword.replace(/[aā]/g, '[aā]')
       .replace(/[iī]/g, '[iī]')
       .replace(/[uū]/g, '[uū]')
       .replace(/[ṅñṇnn]/g, '[ṅñṇnn]')
@@ -60,10 +62,9 @@ const searchRegex = (searchKeyword, accentMode) => {
       .replace(/[ḍd]/g, '[ḍd]')
       .replace(/[ḷl]/g, '[ḷl]')
       .replace(/[ḥh]/g, '[ḥh]');
-    return new RegExp(regexBase, 'gi');
-  } else {
-    return new RegExp(searchKeyword, 'gi');
   }
+
+  return new RegExp(regexBase, 'gi');
 }
 
 const headwordFilter = (condition, headword, keyword) => {
