@@ -44,20 +44,20 @@ const displayDefinitions = (data) => {
   });
 };
 
-function headwordFilter(accentMode, headword, keyword) {
-  if (accentMode === 'insensitive') {
+function headwordFilter(condition, headword, keyword) {
+  if (condition.accentMode === 'insensitive') {
     // accent insensitive
     const normalizedHeadword = normalizeString(headword);
     const normalizedSearchHeadword = normalizeString(keyword);
-    return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
+    return matchHeadword(condition, normalizedHeadword, normalizedSearchHeadword);
   } else {
     // accent sensitive
-    return matchHeadword(headword, keyword);
+    return matchHeadword(condition, headword, keyword);
   }
 }
 
-function definitionFilter(accentMode, definition, keyword) {
-  if (accentMode === 'insensitive') {
+function definitionFilter(condition, definition, keyword) {
+  if (condition.accentMode === 'insensitive') {
     // accent insensitive
     const normalizedDefinition = normalizeString(definition);
     const normalizedSearchHeadword = normalizeString(keyword);
@@ -80,16 +80,18 @@ function searchHeadword() {
     return;
   }
 
+  const condition = { "matchMode": getAccentMode(), "accentMode": getMatchMode()}
+
   // filter the data based on the search keyword
   const newData = data.filter((definition) => {
-    const accentMode = getAccentMode();
-    const result = headwordFilter(accentMode, definition.headword, searchKeyword);
+
+    const result = headwordFilter(condition, definition.headword, searchKeyword);
 
     // apply another filter if result is false
     if ( result ) {
       return true;
     } else {
-      return definitionFilter(accentMode, definition.definition, searchKeyword);
+      return definitionFilter(condition, definition.definition, searchKeyword);
     }
   });
 
@@ -104,11 +106,10 @@ function searchHeadword() {
 }
 
 // match the search keyword with the headword
-const matchHeadword = (headword, searchHeadword) => {
-    const matchMode = getMatchMode();
-    if ( matchMode === 'forward' ) {
+const matchHeadword = (condition, headword, searchHeadword) => {
+    if ( condition.matchMode === 'forward' ) {
       return headword.startsWith(searchHeadword);
-    } else if ( matchMode === 'exact' ) {
+    } else if ( condition.matchMode === 'exact' ) {
       return headword === searchHeadword;
     } else {
       return headword.endsWith(searchHeadword);
