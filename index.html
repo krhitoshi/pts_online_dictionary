@@ -16,6 +16,9 @@
 <form id="search">
   Keyword: <input type="text" name="keyword" id="keyword" placeholder="keyword">
   <br>
+  <label for="include-definition">Include definition:</label>
+  <input type="checkbox" id="include-definition" name="include-definition">
+  <br>
   Accent:
   <input type="radio" id="accentInsensitive" name="accent-mode" value="insensitive" checked>
   <label for="accentInsensitive">Insensitive</label>
@@ -65,6 +68,11 @@
           searchHeadword();
         });
       });
+    });
+
+    // search headword when user changes include definition mode
+    document.getElementById('include-definition').addEventListener('change', () => {
+      searchHeadword();
     });
 
     // prevent the form from submitting when user presses enter

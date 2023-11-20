@@ -80,18 +80,21 @@ function searchHeadword() {
     return;
   }
 
-  const condition = { "matchMode": getAccentMode(), "accentMode": getMatchMode()}
+  const condition = { "matchMode": getMatchMode(),
+    "accentMode": getAccentMode(),
+    "includeDefinitionMode": getIncludeDefinitionMode() };
 
   // filter the data based on the search keyword
   const newData = data.filter((definition) => {
 
     const result = headwordFilter(condition, definition.headword, searchKeyword);
 
-    // apply another filter if result is false
     if ( result ) {
       return true;
-    } else {
+    } else if ( condition.includeDefinitionMode ) {
       return definitionFilter(condition, definition.definition, searchKeyword);
+    } else {
+      return false;
     }
   });
 
@@ -166,6 +169,10 @@ const getAccentMode = () => {
 const getMatchMode = () => {
   return document.querySelector('input[name="match-mode"]:checked').value;
 };
+// get include definition checkbox value
+const getIncludeDefinitionMode = () => {
+  return document.getElementById('include-definition').checked;
+}
 
 // show an element
 const show = (id) => {
