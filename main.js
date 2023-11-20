@@ -72,7 +72,7 @@ function searchHeadword() {
     }
   });
 
-  // hide the table if there is no definition
+  // hide the table if no definition matches the search keyword
   if (newData.length === 0) {
     hideDefinitionTable();
   } else {
