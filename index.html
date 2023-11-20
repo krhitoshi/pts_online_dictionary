@@ -14,7 +14,10 @@
 <p id="status"></p>
 
 <form id="search">
-  Loop up: <input type="text" name="headword" placeholder="Headword">
+  Keyword: <input type="text" name="keyword" id="keyword" placeholder="keyword">
+  <br>
+  <label for="include-definition">Include definition:</label>
+  <input type="checkbox" id="include-definition" name="include-definition">
   <br>
   Accent:
   <input type="radio" id="accentInsensitive" name="accent-mode" value="insensitive" checked>
@@ -39,5 +42,46 @@
   </tr>
 </table>
 <script src="main.js"></script>
+<script>
+  // execute when page loads
+  window.onload = () => {
+    status('loading dictionary data... (It will take a few seconds.)');
+
+    loadJSON((response) => {
+      data = JSON.parse(response);
+      console.log(data.length);
+      clearStatus();
+      status('successfully dictionary data loaded.');
+      status('ready for looking up words.')
+    });
+
+    // search headword when user keys on search box
+    document.getElementById('search').elements[0].addEventListener('keyup', () => {
+      searchHeadword();
+    });
+
+    // search headword when user changes accent/match mode
+    const radioButtonModes = ['accent-mode', 'match-mode'];
+    radioButtonModes.forEach((mode) => {
+      document.querySelectorAll(`input[name="${mode}"]`).forEach((item) => {
+        item.addEventListener('change', () => {
+          searchHeadword();
+        });
+      });
+    });
+
+    // search headword when user changes include definition mode
+    document.getElementById('include-definition').addEventListener('change', () => {
+      searchHeadword();
+    });
+
+    // prevent the form from submitting when user presses enter
+    document.getElementById('search').addEventListener('keypress', function(event) {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+      }
+    });
+  };
+</script>
 </body>
 </html>

@@ -21,41 +21,6 @@ const loadJSON = (callback) => {
   xhr.send(null);
 };
 
-// execute loadJSON when page loads
-window.onload = () => {
-  status('loading dictionary data... (It will take a few seconds.)');
-  loadJSON((response) => {
-    // Parse JSON string into object
-    data = JSON.parse(response);
-    console.log(data.length);
-    clearStatus();
-    status('successfully dictionary data loaded.');
-    status('ready for looking up words.')
-  });
-
-  // search headword when user keys on search box
-  document.getElementById('search').elements[0].addEventListener('keyup', () => {
-    searchHeadword();
-  });
-
-  // search headword when user changes accent/match mode
-  const radioButtonModes = ['accent-mode', 'match-mode'];
-  radioButtonModes.forEach((mode) => {
-    document.querySelectorAll(`input[name="${mode}"]`).forEach((item) => {
-      item.addEventListener('change', () => {
-        searchHeadword();
-      });
-    });
-  });
-
-  // prevent the form from submitting when user presses enter
-  document.getElementById('search').addEventListener('keypress', function(event) {
-    if (event.keyCode == 13) {
-      event.preventDefault();
-    }
-  });
-};
-
 // display the number of definitions
 const displayNumDefinitions = (data) => {
   const numDefinitions = document.getElementById('num-definitions');
@@ -79,35 +44,61 @@ const displayDefinitions = (data) => {
   });
 };
 
+function headwordFilter(condition, headword, keyword) {
+  if (condition.accentMode === 'insensitive') {
+    // accent insensitive
+    const normalizedHeadword = normalizeString(headword);
+    const normalizedSearchHeadword = normalizeString(keyword);
+    return matchHeadword(condition, normalizedHeadword, normalizedSearchHeadword);
+  } else {
+    // accent sensitive
+    return matchHeadword(condition, headword, keyword);
+  }
+}
+
+function definitionFilter(condition, definition, keyword) {
+  if (condition.accentMode === 'insensitive') {
+    // accent insensitive
+    const normalizedDefinition = normalizeString(definition);
+    const normalizedSearchHeadword = normalizeString(keyword);
+    return matchDefinition(normalizedDefinition, normalizedSearchHeadword);
+  } else {
+    // accent sensitive
+    return matchDefinition(definition, keyword);
+  }
+}
+
 // display only the definitions that match the search keyword
 function searchHeadword() {
   deleteDefinitions();
   // get the search headword
-  const searchHeadword = document.getElementById('search').elements[0].value;
+  const searchKeyword = document.getElementById('keyword').value;
 
   // do nothing if the search keyword is empty
-  if (searchHeadword === '') {
+  if (searchKeyword === '') {
     hideDefinitionTable();
     return;
   }
 
+  const condition = { "matchMode": getMatchMode(),
+    "accentMode": getAccentMode(),
+    "includeDefinitionMode": getIncludeDefinitionMode() };
+
   // filter the data based on the search keyword
   const newData = data.filter((definition) => {
-    const headword = definition.headword;
 
-    if ( getAccentMode() === 'insensitive' ) {
-      // accent insensitive
-      const normalizedHeadword = normalizeString(headword);
-      const normalizedSearchHeadword = normalizeString(searchHeadword);
-      return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
-    }
-    else {
-      // accent sensitive
-      return matchHeadword(headword, searchHeadword);
+    const result = headwordFilter(condition, definition.headword, searchKeyword);
+
+    if ( result ) {
+      return true;
+    } else if ( condition.includeDefinitionMode ) {
+      return definitionFilter(condition, definition.definition, searchKeyword);
+    } else {
+      return false;
     }
   });
 
-  // hide the table if there is no definition
+  // hide the table if no definition matches the search keyword
   if (newData.length === 0) {
     hideDefinitionTable();
   } else {
@@ -118,16 +109,20 @@ function searchHeadword() {
 }
 
 // match the search keyword with the headword
-const matchHeadword = (headword, searchHeadword) => {
-    const matchMode = getMatchMode();
-    if ( matchMode === 'forward' ) {
+const matchHeadword = (condition, headword, searchHeadword) => {
+    if ( condition.matchMode === 'forward' ) {
       return headword.startsWith(searchHeadword);
-    } else if ( matchMode === 'exact' ) {
+    } else if ( condition.matchMode === 'exact' ) {
       return headword === searchHeadword;
     } else {
       return headword.endsWith(searchHeadword);
     }
 };
+
+// match the search keyword with the definition
+const matchDefinition = (definition, searchDefinition) => {
+  return definition.includes(searchDefinition);
+}
 
 // append a message to the status element
 const status = (message) => {
@@ -174,6 +169,10 @@ const getAccentMode = () => {
 const getMatchMode = () => {
   return document.querySelector('input[name="match-mode"]:checked').value;
 };
+// get include definition checkbox value
+const getIncludeDefinitionMode = () => {
+  return document.getElementById('include-definition').checked;
+}
 
 // show an element
 const show = (id) => {
