@@ -30,11 +30,17 @@ const displayNumDefinitions = (data) => {
 // display the definitions
 const displayDefinitions = (data) => {
   const table = document.getElementById('definitions');
+  const searchKeyword = document.getElementById('keyword').value;
+  const regex = new RegExp(searchKeyword, 'gi');
+
   data.forEach((item, index) => {
     const row = table.insertRow(index + 1);
     const headword = row.insertCell(0);
     headword.className = "headword";
-    headword.innerHTML = item.headword;
+
+    // highlight the search keyword
+
+    headword.innerHTML = item.headword.replace(regex, (match) => `<span class="highlight">${match}</span>`);
     const definition = row.insertCell(1);
     definition.innerHTML = item.definition;
     // add memo into definition if memo is not empty
