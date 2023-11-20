@@ -131,7 +131,12 @@ const matchDefinition = (definition, searchDefinition) => {
 
 // highlight the search keyword
 const highlight = (text, searchKeyword) => {
-  return text.replace(searchKeyword, (match) => `<span class="highlight">${match}</span>`);
+  // do nothing if the search keyword is one character or less
+  if ( searchKeyword.length <= 1 ) {
+    return text
+  } else {
+    return text.replace(searchKeyword, (match) => `<span class="highlight">${match}</span>`);
+  }
 };
 
 // append a message to the status element
