@@ -31,16 +31,7 @@ const displayNumDefinitions = (data) => {
 const displayDefinitions = (data) => {
   const table = document.getElementById('definitions');
   let searchKeyword = getSearchKeyword();
-  let regexBase = searchKeyword.replace(/[aā]/g, '[aā]');
-  regexBase = regexBase.replace(/[iī]/g, '[iī]');
-  regexBase = regexBase.replace(/[uū]/g, '[uū]');
-  regexBase = regexBase.replace(/[ṅñṇnn]/g, '[ṅñṇnn]');
-  regexBase = regexBase.replace(/[ṃmṁ]/g, '[ṃmṁ]');
-  regexBase = regexBase.replace(/[ṭt]/g, '[ṭt]');
-  regexBase = regexBase.replace(/[ḍd]/g, '[ḍd]');
-  regexBase = regexBase.replace(/[ḷl]/g, '[ḷl]');
-  regexBase = regexBase.replace(/[ḥh]/g, '[ḥh]');
-  const regex = new RegExp(regexBase, 'gi');
+  const regex = searchRegex(searchKeyword, getAccentMode());
 
   data.forEach((item, index) => {
     const row = table.insertRow(index + 1);
@@ -57,6 +48,23 @@ const displayDefinitions = (data) => {
     }
   });
 };
+
+const searchRegex = (searchKeyword, accentMode) => {
+  if ( accentMode === 'insensitive' ) {
+    let regexBase = searchKeyword.replace(/[aā]/g, '[aā]')
+      .replace(/[iī]/g, '[iī]')
+      .replace(/[uū]/g, '[uū]')
+      .replace(/[ṅñṇnn]/g, '[ṅñṇnn]')
+      .replace(/[ṃmṁ]/g, '[ṃmṁ]')
+      .replace(/[ṭt]/g, '[ṭt]')
+      .replace(/[ḍd]/g, '[ḍd]')
+      .replace(/[ḷl]/g, '[ḷl]')
+      .replace(/[ḥh]/g, '[ḥh]');
+    return new RegExp(regexBase, 'gi');
+  } else {
+    return new RegExp(searchKeyword, 'gi');
+  }
+}
 
 const headwordFilter = (condition, headword, keyword) => {
   if (condition.accentMode === 'insensitive') {
