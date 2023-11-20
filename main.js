@@ -53,7 +53,7 @@ const highlightRegex = (searchKeyword, accentMode) => {
   let regexBase = searchKeyword
 
   if ( accentMode === 'insensitive' ) {
-    regexBase = searchKeyword.replace(/[aā]/g, '[aā]')
+    regexBase = escapeRegExp(searchKeyword).replace(/[aā]/g, '[aā]')
       .replace(/[iī]/g, '[iī]')
       .replace(/[uū]/g, '[uū]')
       .replace(/[ṅñṇnn]/g, '[ṅñṇnn]')
@@ -65,6 +65,11 @@ const highlightRegex = (searchKeyword, accentMode) => {
   }
 
   return new RegExp(regexBase, 'gi');
+}
+
+function escapeRegExp(string) {
+  // $& means the whole matched string
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 const headwordFilter = (condition, headword, keyword) => {
