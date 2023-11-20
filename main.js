@@ -21,41 +21,6 @@ const loadJSON = (callback) => {
   xhr.send(null);
 };
 
-// execute loadJSON when page loads
-window.onload = () => {
-  status('loading dictionary data... (It will take a few seconds.)');
-  loadJSON((response) => {
-    // Parse JSON string into object
-    data = JSON.parse(response);
-    console.log(data.length);
-    clearStatus();
-    status('successfully dictionary data loaded.');
-    status('ready for looking up words.')
-  });
-
-  // search headword when user keys on search box
-  document.getElementById('search').elements[0].addEventListener('keyup', () => {
-    searchHeadword();
-  });
-
-  // search headword when user changes accent/match mode
-  const radioButtonModes = ['accent-mode', 'match-mode'];
-  radioButtonModes.forEach((mode) => {
-    document.querySelectorAll(`input[name="${mode}"]`).forEach((item) => {
-      item.addEventListener('change', () => {
-        searchHeadword();
-      });
-    });
-  });
-
-  // prevent the form from submitting when user presses enter
-  document.getElementById('search').addEventListener('keypress', function(event) {
-    if (event.keyCode == 13) {
-      event.preventDefault();
-    }
-  });
-};
-
 // display the number of definitions
 const displayNumDefinitions = (data) => {
   const numDefinitions = document.getElementById('num-definitions');
