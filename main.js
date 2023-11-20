@@ -49,7 +49,7 @@ const displayDefinitions = (data) => {
   });
 };
 
-function headwordFilter(condition, headword, keyword) {
+const headwordFilter = (condition, headword, keyword) => {
   if (condition.accentMode === 'insensitive') {
     // accent insensitive
     const normalizedHeadword = normalizeString(headword);
@@ -59,9 +59,9 @@ function headwordFilter(condition, headword, keyword) {
     // accent sensitive
     return matchHeadword(condition, headword, keyword);
   }
-}
+};
 
-function definitionFilter(condition, definition, keyword) {
+const definitionFilter = (condition, definition, keyword) => {
   if (condition.accentMode === 'insensitive') {
     // accent insensitive
     const normalizedDefinition = normalizeString(definition);
@@ -71,10 +71,10 @@ function definitionFilter(condition, definition, keyword) {
     // accent sensitive
     return matchDefinition(definition, keyword);
   }
-}
+};
 
 // display only the definitions that match the search keyword
-function searchHeadword() {
+const searchHeadword = () => {
   deleteDefinitions();
   // get the search headword
   const searchKeyword = document.getElementById('keyword').value;
@@ -111,7 +111,7 @@ function searchHeadword() {
     displayDefinitions(newData);
     showDefinitionTable();
   }
-}
+};
 
 // match the search keyword with the headword
 const matchHeadword = (condition, headword, searchHeadword) => {
@@ -157,13 +157,13 @@ const hideDefinitionTable = () => {
 };
 
 // delete definitions
-function deleteDefinitions() {
+const deleteDefinitions = () => {
   const table = document.getElementById('definitions');
   const numRows = table.rows.length;
   for (let i = 1; i < numRows; i++) {
     table.deleteRow(1);
   }
-}
+};
 
 // update num-definitions
 const updateNumDefinitions = (numDefinitions) => {
