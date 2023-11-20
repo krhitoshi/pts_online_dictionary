@@ -39,13 +39,12 @@ const displayDefinitions = (data) => {
     headword.className = "headword";
 
     // highlight the search keyword
-
-    headword.innerHTML = item.headword.replace(regex, (match) => `<span class="highlight">${match}</span>`);
+    headword.innerHTML = highlight(item.headword, searchKeyword);
     const definition = row.insertCell(1);
-    definition.innerHTML = item.definition;
+    definition.innerHTML = highlight(item.definition, searchKeyword);
     // add memo into definition if memo is not empty
     if (item.memo !== '') {
-      definition.innerHTML += `<hr>${item.memo}`;
+      definition.innerHTML += `<hr>${highlight(item.memo, searchKeyword)}`;
     }
   });
 };
@@ -129,6 +128,11 @@ const matchHeadword = (condition, headword, searchHeadword) => {
 const matchDefinition = (definition, searchDefinition) => {
   return definition.includes(searchDefinition);
 }
+
+// highlight the search keyword
+const highlight = (text, searchKeyword) => {
+  return text.replace(searchKeyword, (match) => `<span class="highlight">${match}</span>`);
+};
 
 // append a message to the status element
 const status = (message) => {
