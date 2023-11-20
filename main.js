@@ -30,7 +30,7 @@ const displayNumDefinitions = (data) => {
 // display the definitions
 const displayDefinitions = (data) => {
   const table = document.getElementById('definitions');
-  const searchKeyword = document.getElementById('keyword').value;
+  const searchKeyword = getSearchKeyword();
   const regex = new RegExp(searchKeyword, 'gi');
 
   data.forEach((item, index) => {
@@ -73,11 +73,16 @@ const definitionFilter = (condition, definition, keyword) => {
   }
 };
 
+// get search keyword
+const getSearchKeyword = () => {
+  return document.getElementById('keyword').value;
+};
+
 // display only the definitions that match the search keyword
 const searchHeadword = () => {
   deleteDefinitions();
   // get the search headword
-  const searchKeyword = document.getElementById('keyword').value;
+  const searchKeyword = getSearchKeyword();
 
   // do nothing if the search keyword is empty
   if (searchKeyword === '') {
