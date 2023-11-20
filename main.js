@@ -48,10 +48,10 @@ const displayDefinitions = (data) => {
 function searchHeadword() {
   deleteDefinitions();
   // get the search headword
-  const searchHeadword = document.getElementById('search').elements[0].value;
+  const searchKeyword = document.getElementById('keyword').value;
 
   // do nothing if the search keyword is empty
-  if (searchHeadword === '') {
+  if (searchKeyword === '') {
     hideDefinitionTable();
     return;
   }
@@ -63,12 +63,12 @@ function searchHeadword() {
     if ( getAccentMode() === 'insensitive' ) {
       // accent insensitive
       const normalizedHeadword = normalizeString(headword);
-      const normalizedSearchHeadword = normalizeString(searchHeadword);
+      const normalizedSearchHeadword = normalizeString(searchKeyword);
       return matchHeadword(normalizedHeadword, normalizedSearchHeadword);
     }
     else {
       // accent sensitive
-      return matchHeadword(headword, searchHeadword);
+      return matchHeadword(headword, searchKeyword);
     }
   });
 
